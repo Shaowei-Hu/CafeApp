@@ -1,0 +1,46 @@
+
+<div *ngIf="item">
+    <h2><span>Item</span> {{item.id}}</h2>
+    <hr>
+    <jhi-alert-error></jhi-alert-error>
+    <dl class="row-md jh-entity-details">
+        <dt><span>Url</span></dt>
+        <dd>
+            <span>{{item.url}}</span>
+        </dd>
+        <dt><span>Description</span></dt>
+        <dd>
+            <span>{{item.description}}</span>
+        </dd>
+        <dt><span>Name</span></dt>
+        <dd>
+            <span>{{item.name}}</span>
+        </dd>
+        <dt><span>Image</span></dt>
+        <dd>
+            <span>{{item.image}}</span>
+        </dd>
+        <dt><span>Tags</span></dt>
+        <dd>
+            <span>{{item.tags}}</span>
+        </dd>
+        <dt><span>Date</span></dt>
+        <dd>
+            <span>{{item.date | date:'medium'}}</span>
+        </dd>
+    </dl>
+
+    <button type="submit"
+            (click)="previousState()"
+            class="btn btn-info">
+        <span class="fa fa-arrow-left"></span>&nbsp;<span> Back</span>
+    </button>
+
+    <button type="button"
+            [routerLink]="['/', { outlets: { popup: 'item/'+ item.id + '/edit'} }]"
+            replaceUrl="true"
+            queryParamsHandling="merge"
+            class="btn btn-primary">
+        <span class="fa fa-pencil"></span>&nbsp;<span> Edit</span>
+    </button>
+</div>

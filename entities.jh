@@ -1,0 +1,28 @@
+entity Item {
+	url String
+    description String
+    name String
+    image String
+    tags String
+    date ZonedDateTime
+}
+
+entity Category {
+	name String
+    description String
+    information String
+}
+
+// defining multiple OneToMany relationships with comments
+relationship ManyToMany {  
+    Category{item} to Item{category}
+}
+
+// Set pagination options
+paginate Category with infinite-scroll
+paginate Item with pagination
+
+// Set service options to all except few
+service all with serviceImpl
+
+dto * with mapstruct

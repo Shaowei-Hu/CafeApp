@@ -1,0 +1,44 @@
+{
+    "fluentMethods": true,
+    "relationships": [
+        {
+            "relationshipType": "many-to-many",
+            "relationshipName": "category",
+            "otherEntityName": "category",
+            "ownerSide": false,
+            "otherEntityRelationshipName": "item"
+        }
+    ],
+    "fields": [
+        {
+            "fieldName": "url",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "description",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "name",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "image",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "tags",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "date",
+            "fieldType": "ZonedDateTime"
+        }
+    ],
+    "changelogDate": "20180321224958",
+    "entityTableName": "item",
+    "dto": "mapstruct",
+    "pagination": "pagination",
+    "service": "serviceImpl",
+    "jpaMetamodelFiltering": false
+}
