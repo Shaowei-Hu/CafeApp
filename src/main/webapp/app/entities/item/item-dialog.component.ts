@@ -85,7 +85,7 @@ export class ItemDialogComponent implements OnInit {
                 }
             }
         }
-        return option;
+        return option.id + '/' + option.name;
     }
 }
 

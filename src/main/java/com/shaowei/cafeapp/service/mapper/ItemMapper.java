@@ -37,10 +37,17 @@ import org.springframework.stereotype.Service;
 
 import com.shaowei.cafeapp.domain.Category;
 import com.shaowei.cafeapp.domain.Item;
+import com.shaowei.cafeapp.repository.CategoryRepository;
 import com.shaowei.cafeapp.service.dto.ItemDTO;
 
 @Service
 public class ItemMapper {
+
+	private final CategoryRepository categoryRepository;
+
+    public ItemMapper(CategoryRepository categoryRepository) {
+        this.categoryRepository = categoryRepository;
+    }
 
     public List<Item> toEntity(List<ItemDTO> dtoList) {
         if ( dtoList == null ) {
@@ -112,9 +119,10 @@ public class ItemMapper {
         }
         
         return strings.stream().map(string -> {
-            Category category = new Category();
-            category.setId(Long.parseLong(string.split("/")[0], 10));
-            return category;
+        	return categoryRepository.findOne(Long.parseLong(string.split("/")[0], 10));
+//            Category category = new Category();
+//            category.setId(Long.parseLong(string.split("/")[0], 10));
+//            return category;
         }).collect(Collectors.toSet());
     }
 

@@ -45,8 +45,11 @@ public class Item implements Serializable {
     @Column(name = "jhi_date")
     private ZonedDateTime date;
 
-    @ManyToMany(mappedBy = "items")
+    @ManyToMany(cascade=CascadeType.MERGE)
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+    @JoinTable(name = "category_item",
+    		inverseJoinColumns = @JoinColumn(name="categories_id", referencedColumnName="id"),
+    			joinColumns = @JoinColumn(name="items_id", referencedColumnName="id"))
     private Set<Category> categories = new HashSet<>();
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove

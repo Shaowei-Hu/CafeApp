@@ -49,7 +49,7 @@ public class CategoryServiceImpl implements CategoryService {
         Category category = categoryMapper.toEntity(categoryDTO);
         category = categoryRepository.save(category);
         CategoryDTO result = categoryMapper.toDto(category);
-        categorySearchRepository.save(category);
+//        categorySearchRepository.save(category);
         return result;
     }
 
@@ -80,6 +80,19 @@ public class CategoryServiceImpl implements CategoryService {
         Category category = categoryRepository.findOneWithEagerRelationships(id);
         return categoryMapper.toDto(category);
     }
+    
+    /**
+     * Get one category by id.
+     *
+     * @param id the id of the entity
+     * @return the entity
+     */
+    @Override
+    @Transactional(readOnly = true)
+    public Category findOneSimpleEntity(Long id) {
+        log.debug("Request to get Category : {}", id);
+        return categoryRepository.findOne(id);
+    }
 
     /**
      * Delete the category by id.
@@ -90,7 +103,7 @@ public class CategoryServiceImpl implements CategoryService {
     public void delete(Long id) {
         log.debug("Request to delete Category : {}", id);
         categoryRepository.delete(id);
-        categorySearchRepository.delete(id);
+//        categorySearchRepository.delete(id);
     }
 
     /**

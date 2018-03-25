@@ -1,11 +1,7 @@
 package com.shaowei.cafeapp.service.impl;
 
-import com.shaowei.cafeapp.service.ItemService;
-import com.shaowei.cafeapp.domain.Item;
-import com.shaowei.cafeapp.repository.ItemRepository;
-import com.shaowei.cafeapp.repository.search.ItemSearchRepository;
-import com.shaowei.cafeapp.service.dto.ItemDTO;
-import com.shaowei.cafeapp.service.mapper.ItemMapper;
+import static org.elasticsearch.index.query.QueryBuilders.queryStringQuery;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -13,8 +9,13 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-
-import static org.elasticsearch.index.query.QueryBuilders.*;
+import com.shaowei.cafeapp.domain.Item;
+import com.shaowei.cafeapp.repository.ItemRepository;
+import com.shaowei.cafeapp.repository.search.ItemSearchRepository;
+import com.shaowei.cafeapp.service.CategoryService;
+import com.shaowei.cafeapp.service.ItemService;
+import com.shaowei.cafeapp.service.dto.ItemDTO;
+import com.shaowei.cafeapp.service.mapper.ItemMapper;
 
 /**
  * Service Implementation for managing Item.
@@ -31,7 +32,8 @@ public class ItemServiceImpl implements ItemService {
 
     private final ItemSearchRepository itemSearchRepository;
 
-    public ItemServiceImpl(ItemRepository itemRepository, ItemMapper itemMapper, ItemSearchRepository itemSearchRepository) {
+    public ItemServiceImpl(ItemRepository itemRepository, ItemMapper itemMapper,
+    		ItemSearchRepository itemSearchRepository, CategoryService categoryService) {
         this.itemRepository = itemRepository;
         this.itemMapper = itemMapper;
         this.itemSearchRepository = itemSearchRepository;
@@ -49,7 +51,7 @@ public class ItemServiceImpl implements ItemService {
         Item item = itemMapper.toEntity(itemDTO);
         item = itemRepository.save(item);
         ItemDTO result = itemMapper.toDto(item);
-        itemSearchRepository.save(item);
+//        itemSearchRepository.save(item);
         return result;
     }
 
@@ -90,7 +92,7 @@ public class ItemServiceImpl implements ItemService {
     public void delete(Long id) {
         log.debug("Request to delete Item : {}", id);
         itemRepository.delete(id);
-        itemSearchRepository.delete(id);
+//        itemSearchRepository.delete(id);
     }
 
     /**

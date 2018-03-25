@@ -1,5 +1,6 @@
 package com.shaowei.cafeapp.service;
 
+import com.shaowei.cafeapp.domain.Category;
 import com.shaowei.cafeapp.service.dto.CategoryDTO;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -49,4 +50,6 @@ public interface CategoryService {
      * @return the list of entities
      */
     Page<CategoryDTO> search(String query, Pageable pageable);
+
+	Category findOneSimpleEntity(Long id);
 }

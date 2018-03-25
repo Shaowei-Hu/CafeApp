@@ -35,11 +35,8 @@ public class Category implements Serializable {
     @Column(name = "information")
     private String information;
 
-    @ManyToMany
+    @ManyToMany(mappedBy = "categories")
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-    @JoinTable(name = "category_item",
-               joinColumns = @JoinColumn(name="categories_id", referencedColumnName="id"),
-               inverseJoinColumns = @JoinColumn(name="items_id", referencedColumnName="id"))
     private Set<Item> items = new HashSet<>();
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
