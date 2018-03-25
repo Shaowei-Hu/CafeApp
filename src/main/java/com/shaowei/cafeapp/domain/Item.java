@@ -45,7 +45,7 @@ public class Item implements Serializable {
     @Column(name = "jhi_date")
     private ZonedDateTime date;
 
-    @ManyToMany(cascade=CascadeType.MERGE)
+    @ManyToMany
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     @JoinTable(name = "category_item",
     		inverseJoinColumns = @JoinColumn(name="categories_id", referencedColumnName="id"),

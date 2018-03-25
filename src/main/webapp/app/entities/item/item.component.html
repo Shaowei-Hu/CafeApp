@@ -55,9 +55,9 @@
                 <td>{{item.image}}</td>
                 <td>{{item.tags}}</td>
                 <td>
-                    <div *ngFor="let category of item.categories">
+                    <span *ngFor="let category of item.categories">
                         <span class="badge badge-info">{{ category.split('/')[1] }}</span>
-                    </div>
+                    </span>
                 </td>
                 <td>{{item.date | date:'medium'}}</td>
                 <td class="text-right">
