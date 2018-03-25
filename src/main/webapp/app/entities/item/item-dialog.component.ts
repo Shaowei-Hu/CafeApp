@@ -44,6 +44,7 @@ export class ItemDialogComponent implements OnInit {
     save() {
         this.isSaving = true;
         if (this.item.id !== undefined) {
+            console.log(this.item);
             this.subscribeToSaveResponse(
                 this.itemService.update(this.item));
         } else {
@@ -75,10 +76,11 @@ export class ItemDialogComponent implements OnInit {
         return item.id;
     }
 
-    getSelected(selectedVals: Array<any>, option: any) {
+    getSelected(selectedVals: Array<String>, option: any) {
         if (selectedVals) {
             for (let i = 0; i < selectedVals.length; i++) {
-                if (option.id === selectedVals[i].id) {
+                console.log('@@@@@@@@@@@@@@@@@@@@@@@@@@@@' + selectedVals[i]);
+                if (option.id === selectedVals[i].split('/')[0]) {
                     return selectedVals[i];
                 }
             }

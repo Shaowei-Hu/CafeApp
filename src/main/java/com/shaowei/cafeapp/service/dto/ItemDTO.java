@@ -12,7 +12,12 @@ import java.util.Objects;
  */
 public class ItemDTO implements Serializable {
 
-    private Long id;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+	private Long id;
 
     private String url;
 
@@ -25,6 +30,8 @@ public class ItemDTO implements Serializable {
     private String tags;
 
     private ZonedDateTime date;
+    
+    private Set<String> categories = new HashSet<>();
 
     public Long getId() {
         return id;
@@ -82,7 +89,15 @@ public class ItemDTO implements Serializable {
         this.date = date;
     }
 
-    @Override
+	public Set<String> getCategories() {
+		return categories;
+	}
+
+	public void setCategories(Set<String> categories) {
+		this.categories = categories;
+	}
+
+	@Override
     public boolean equals(Object o) {
         if (this == o) {
             return true;

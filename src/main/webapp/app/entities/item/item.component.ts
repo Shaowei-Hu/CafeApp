@@ -6,6 +6,8 @@ import { JhiEventManager, JhiParseLinks, JhiAlertService } from 'ng-jhipster';
 
 import { Item } from './item.model';
 import { ItemService } from './item.service';
+import { Category } from '../category/category.model';
+import { CategoryService } from '../category/category.service';
 import { ITEMS_PER_PAGE, Principal } from '../../shared';
 
 @Component({
@@ -16,6 +18,7 @@ export class ItemComponent implements OnInit, OnDestroy {
 
 currentAccount: any;
     items: Item[];
+    categories: Category[];
     error: any;
     success: any;
     eventSubscriber: Subscription;
@@ -32,6 +35,7 @@ currentAccount: any;
 
     constructor(
         private itemService: ItemService,
+        private categoryService: CategoryService,
         private parseLinks: JhiParseLinks,
         private jhiAlertService: JhiAlertService,
         private principal: Principal,
@@ -112,10 +116,22 @@ currentAccount: any;
     }
     ngOnInit() {
         this.loadAll();
+        this.loadCategories();
         this.principal.identity().then((account) => {
             this.currentAccount = account;
         });
         this.registerChangeInItems();
+    }
+
+    loadCategories() {
+        this.categoryService.query({
+            page: 0,
+            size: 20,
+            sort: this.sort()
+        }).subscribe(
+            (res: HttpResponse<Category[]>) => this.onCategorySuccess(res.body, res.headers),
+            (res: HttpErrorResponse) => this.onError(res.message)
+        );
     }
 
     ngOnDestroy() {
@@ -144,6 +160,16 @@ currentAccount: any;
         // this.page = pagingParams.page;
         this.items = data;
     }
+
+    private onCategorySuccess(data, headers) {
+        this.links = this.parseLinks.parse(headers.get('link'));
+        this.totalItems = headers.get('X-Total-Count');
+        this.categories = data;
+        // for (let i = 0; i < data.length; i++) {
+        //     this.categories.push(data[i]);
+        // }
+    }
+
     private onError(error) {
         this.jhiAlertService.error(error.message, null, null);
     }

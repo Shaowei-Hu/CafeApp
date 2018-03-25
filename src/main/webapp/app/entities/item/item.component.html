@@ -25,6 +25,12 @@
         </div>
     </div>
     <br/>
+    <div class="btn-group btn-group-toggle" ngbRadioGroup name="radioBasic" *ngIf="categories && categories.length>0">
+        <label ngbButtonLabel class="btn-primary" *ngFor="let category of categories">
+          <input ngbButton type="radio" [value]="category.name"> {{category.name}}
+        </label>
+      </div>
+    <br/><br/>
     <div class="table-responsive" *ngIf="items">
         <table class="table table-striped">
             <thead>
@@ -35,6 +41,7 @@
             <th jhiSortBy="name"><span>Name</span> <span class="fa fa-sort"></span></th>
             <th jhiSortBy="image"><span>Image</span> <span class="fa fa-sort"></span></th>
             <th jhiSortBy="tags"><span>Tags</span> <span class="fa fa-sort"></span></th>
+            <th><span>Categories</span></th>
             <th jhiSortBy="date"><span>Date</span> <span class="fa fa-sort"></span></th>
             <th></th>
             </tr>
@@ -47,6 +54,11 @@
                 <td>{{item.name}}</td>
                 <td>{{item.image}}</td>
                 <td>{{item.tags}}</td>
+                <td>
+                    <div *ngFor="let category of item.categories">
+                        <span class="badge badge-info">{{ category.split('/')[1] }}</span>
+                    </div>
+                </td>
                 <td>{{item.date | date:'medium'}}</td>
                 <td class="text-right">
                     <div class="btn-group flex-btn-group-container">

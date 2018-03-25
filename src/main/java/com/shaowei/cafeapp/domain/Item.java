@@ -1,6 +1,5 @@
 package com.shaowei.cafeapp.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
@@ -47,7 +46,6 @@ public class Item implements Serializable {
     private ZonedDateTime date;
 
     @ManyToMany(mappedBy = "items")
-    @JsonIgnore
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<Category> categories = new HashSet<>();
 

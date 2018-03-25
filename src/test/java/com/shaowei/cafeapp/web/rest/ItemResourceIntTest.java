@@ -357,10 +357,4 @@ public class ItemResourceIntTest {
         assertThat(itemDTO1).isNotEqualTo(itemDTO2);
     }
 
-    @Test
-    @Transactional
-    public void testEntityFromId() {
-        assertThat(itemMapper.fromId(42L).getId()).isEqualTo(42);
-        assertThat(itemMapper.fromId(null)).isNull();
-    }
 }

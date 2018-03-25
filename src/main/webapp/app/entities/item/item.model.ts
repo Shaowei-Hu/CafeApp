@@ -1,4 +1,5 @@
 import { BaseEntity } from './../../shared';
+import { Category } from '../category';
 
 export class Item implements BaseEntity {
     constructor(
@@ -9,7 +10,7 @@ export class Item implements BaseEntity {
         public image?: string,
         public tags?: string,
         public date?: any,
-        public categories?: BaseEntity[],
+        public categories?: String[],
     ) {
     }
 }
