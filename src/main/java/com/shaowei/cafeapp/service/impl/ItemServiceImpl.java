@@ -68,6 +68,20 @@ public class ItemServiceImpl implements ItemService {
         return itemRepository.findAll(pageable)
             .map(itemMapper::toDto);
     }
+    
+    /**
+     * Get all the items by category id.
+     *
+     * @param pageable the pagination information
+     * @return the list of entities
+     */
+	@Override
+	@Transactional(readOnly = true)
+	public Page<ItemDTO> findAllByCategoryId(Long id, Pageable pageable) {
+        log.debug("Request to get all Items by category");
+        return itemRepository.findByCategories_Id(id, pageable)
+            .map(itemMapper::toDto);
+	}
 
     /**
      * Get one item by id.
@@ -109,4 +123,5 @@ public class ItemServiceImpl implements ItemService {
         Page<Item> result = itemSearchRepository.search(queryStringQuery(query), pageable);
         return result.map(itemMapper::toDto);
     }
+
 }

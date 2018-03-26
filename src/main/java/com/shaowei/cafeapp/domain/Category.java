@@ -35,7 +35,7 @@ public class Category implements Serializable {
     @Column(name = "information")
     private String information;
 
-    @ManyToMany(mappedBy = "categories")
+    @ManyToMany(mappedBy = "categories", fetch = FetchType.LAZY)
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<Item> items = new HashSet<>();
 

@@ -23,6 +23,7 @@ currentAccount: any;
     success: any;
     eventSubscriber: Subscription;
     currentSearch: string;
+    currentFilter: number;
     routeData: any;
     links: any;
     totalItems: any;
@@ -52,6 +53,7 @@ currentAccount: any;
         });
         this.currentSearch = this.activatedRoute.snapshot && this.activatedRoute.snapshot.params['search'] ?
             this.activatedRoute.snapshot.params['search'] : '';
+        this.currentFilter = 0;
     }
 
     loadAll() {
@@ -64,6 +66,16 @@ currentAccount: any;
                     (res: HttpResponse<Item[]>) => this.onSuccess(res.body, res.headers),
                     (res: HttpErrorResponse) => this.onError(res.message)
                 );
+            return;
+        }
+        if (this.currentFilter) {
+            this.itemService.queryByCategoryId(this.currentFilter, {
+                page: this.page - 1,
+                size: this.itemsPerPage,
+                sort: this.sort()}).subscribe(
+                    (res: HttpResponse<Item[]>) => this.onSuccess(res.body, res.headers),
+                    (res: HttpErrorResponse) => this.onError(res.message)
+            );
             return;
         }
         this.itemService.query({
@@ -126,12 +138,23 @@ currentAccount: any;
     loadCategories() {
         this.categoryService.query({
             page: 0,
-            size: 20,
+            size: 30,
             sort: this.sort()
         }).subscribe(
-            (res: HttpResponse<Category[]>) => this.onCategorySuccess(res.body, res.headers),
+            (res: HttpResponse<Category[]>) => this.onCategorySuccess(res.body),
             (res: HttpErrorResponse) => this.onError(res.message)
         );
+    }
+
+    getCurrentCategory(currentCategoryId: number) {
+        this.currentFilter = currentCategoryId;
+        this.loadAll();
+        // this.categoryService.find(currentCategoryId).subscribe(
+        //     (res: HttpResponse<Category>) => {
+        //         this.items = res.body.items;
+        //     },
+        //     (res: HttpErrorResponse) => this.onError(res.message)
+        // );
     }
 
     ngOnDestroy() {
@@ -161,9 +184,9 @@ currentAccount: any;
         this.items = data;
     }
 
-    private onCategorySuccess(data, headers) {
-        this.links = this.parseLinks.parse(headers.get('link'));
-        this.totalItems = headers.get('X-Total-Count');
+    private onCategorySuccess(data, headers?: any) {
+        // this.links = this.parseLinks.parse(headers.get('link'));
+        // this.totalItems = headers.get('X-Total-Count');
         this.categories = data;
         // for (let i = 0; i < data.length; i++) {
         //     this.categories.push(data[i]);

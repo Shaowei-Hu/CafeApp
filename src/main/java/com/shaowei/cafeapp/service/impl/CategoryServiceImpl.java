@@ -77,7 +77,8 @@ public class CategoryServiceImpl implements CategoryService {
     @Transactional(readOnly = true)
     public CategoryDTO findOne(Long id) {
         log.debug("Request to get Category : {}", id);
-        Category category = categoryRepository.findOneWithEagerRelationships(id);
+//        Category category = categoryRepository.findOneWithEagerRelationships(id);
+        Category category = categoryRepository.findOne(id);
         return categoryMapper.toDto(category);
     }
     

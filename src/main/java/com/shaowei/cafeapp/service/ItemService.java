@@ -24,6 +24,14 @@ public interface ItemService {
      * @return the list of entities
      */
     Page<ItemDTO> findAll(Pageable pageable);
+    
+    /**
+     * Get all the items by category id.
+     *
+     * @param pageable the pagination information
+     * @return the list of entities
+     */
+    Page<ItemDTO> findAllByCategoryId(Long id, Pageable pageable);
 
     /**
      * Get the "id" item.

@@ -98,6 +98,22 @@ public class ItemResource {
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/items");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
+    
+    /**
+     * GET  /items/:id : get the "id" item.
+     *
+     * @param id the id of the itemDTO to retrieve
+     * @return the ResponseEntity with status 200 (OK) and with body the itemDTO, or with status 404 (Not Found)
+     */
+    @GetMapping("/items/byCategory/{id}")
+    @Timed
+    public ResponseEntity<List<ItemDTO>> getItemByCategoryId(@PathVariable Long id, Pageable pageable) {
+        log.debug("REST request to get Item by Category: {}", id);
+        Page<ItemDTO> page = itemService.findAllByCategoryId(id, pageable);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/items");
+        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+    }
+    
 
     /**
      * GET  /items/:id : get the "id" item.

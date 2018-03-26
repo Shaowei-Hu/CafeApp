@@ -33,8 +33,8 @@ export class CategoryDialogComponent implements OnInit {
 
     ngOnInit() {
         this.isSaving = false;
-        this.itemService.query()
-            .subscribe((res: HttpResponse<Item[]>) => { this.items = res.body; }, (res: HttpErrorResponse) => this.onError(res.message));
+        // this.itemService.query()
+        //     .subscribe((res: HttpResponse<Item[]>) => { this.items = res.body; }, (res: HttpErrorResponse) => this.onError(res.message));
     }
 
     clear() {

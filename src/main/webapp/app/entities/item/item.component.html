@@ -26,8 +26,11 @@
     </div>
     <br/>
     <div class="btn-group btn-group-toggle" ngbRadioGroup name="radioBasic" *ngIf="categories && categories.length>0">
+        <label ngbButtonLabel class="btn-primary">
+            <input ngbButton type="radio" [value]="0" (click)="getCurrentCategory(0)"> All
+        </label>
         <label ngbButtonLabel class="btn-primary" *ngFor="let category of categories">
-          <input ngbButton type="radio" [value]="category.name"> {{category.name}}
+          <input ngbButton type="radio" [value]="category.id" (click)="getCurrentCategory(category.id)"> {{category.name}}
         </label>
       </div>
     <br/><br/>
