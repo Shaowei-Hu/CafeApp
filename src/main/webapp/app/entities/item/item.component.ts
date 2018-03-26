@@ -148,6 +148,7 @@ currentAccount: any;
 
     getCurrentCategory(currentCategoryId: number) {
         this.currentFilter = currentCategoryId;
+        this.page = 1;
         this.loadAll();
         // this.categoryService.find(currentCategoryId).subscribe(
         //     (res: HttpResponse<Category>) => {

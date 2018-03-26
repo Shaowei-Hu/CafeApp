@@ -2,6 +2,7 @@ package com.shaowei.cafeapp.domain;
 
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
 
@@ -43,6 +44,7 @@ public class Item implements Serializable {
     private String tags;
 
     @Column(name = "jhi_date")
+    @CreationTimestamp
     private ZonedDateTime date;
 
     @ManyToMany
