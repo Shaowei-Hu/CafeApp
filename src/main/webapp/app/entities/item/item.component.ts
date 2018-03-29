@@ -12,7 +12,10 @@ import { ITEMS_PER_PAGE, Principal } from '../../shared';
 
 @Component({
     selector: 'jhi-item',
-    templateUrl: './item.component.html'
+    templateUrl: './item.component.html',
+    styleUrls: [
+        'item.scss'
+    ]
 })
 export class ItemComponent implements OnInit, OnDestroy {
 

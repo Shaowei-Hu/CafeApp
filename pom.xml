@@ -771,7 +771,7 @@
                         <artifactId>frontend-maven-plugin</artifactId>
                         <version>${frontend-maven-plugin.version}</version>
                         <executions>
-                            <execution>
+                            <!-- <execution>
                                 <id>install node and yarn</id>
                                 <goals>
                                     <goal>install-node-and-yarn</goal>
@@ -780,17 +780,17 @@
                                     <nodeVersion>${node.version}</nodeVersion>
                                     <yarnVersion>${yarn.version}</yarnVersion>
                                 </configuration>
-                            </execution>
-                            <execution>
+                            </execution> -->
+                            <!-- <execution>
                                 <id>yarn install</id>
                                 <goals>
                                     <goal>yarn</goal>
                                 </goals>
                                 <configuration>
-                                    <arguments>install --force</arguments>
+                                    <arguments>install force</arguments>
                                 </configuration>
-                            </execution>
-                            <execution>
+                            </execution> -->
+                            <!-- <execution>
                                 <id>webpack build test</id>
                                 <goals>
                                     <goal>yarn</goal>
@@ -800,7 +800,7 @@
                                     <arguments>run webpack:test</arguments>
                                     <yarnInheritsProxyConfigFromMaven>false</yarnInheritsProxyConfigFromMaven>
                                 </configuration>
-                            </execution>
+                            </execution> -->
                             <execution>
                                 <id>webpack build prod</id>
                                 <goals>

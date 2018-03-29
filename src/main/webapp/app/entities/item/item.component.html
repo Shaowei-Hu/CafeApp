@@ -40,10 +40,10 @@
             <tr jhiSort [(predicate)]="predicate" [(ascending)]="reverse" [callback]="transition.bind(this)">
             <th jhiSortBy="id"><span>ID</span> <span class="fa fa-sort"></span></th>
             <th jhiSortBy="url"><span>Url</span> <span class="fa fa-sort"></span></th>
-            <th jhiSortBy="description"><span>Description</span> <span class="fa fa-sort"></span></th>
             <th jhiSortBy="name"><span>Name</span> <span class="fa fa-sort"></span></th>
-            <th jhiSortBy="image"><span>Image</span> <span class="fa fa-sort"></span></th>
-            <th jhiSortBy="tags"><span>Tags</span> <span class="fa fa-sort"></span></th>
+            <th jhiSortBy="description"><span>Description</span> <span class="fa fa-sort"></span></th>
+            <!-- <th jhiSortBy="image"><span>Image</span> <span class="fa fa-sort"></span></th>
+            <th jhiSortBy="tags"><span>Tags</span> <span class="fa fa-sort"></span></th> -->
             <th><span>Categories</span></th>
             <th jhiSortBy="date"><span>Date</span> <span class="fa fa-sort"></span></th>
             <th></th>
@@ -52,11 +52,11 @@
             <tbody>
             <tr *ngFor="let item of items ;trackBy: trackId">
                 <td><a [routerLink]="['../item', item.id ]">{{item.id}}</a></td>
-                <td><a href="{{item.url}}" target="_blank">{{item.url.substring(7, 86)}}</a></td>
-                <td>{{item.description}}</td>
+                <td><a href="{{item.url}}" target="_blank">{{item.url.substring(7, 98)}}</a></td>
                 <td>{{item.name}}</td>
-                <td>{{item.image}}</td>
-                <td>{{item.tags}}</td>
+                <td>{{item.description}}</td>
+                <!-- <td>{{item.image}}</td>
+                <td>{{item.tags}}</td> -->
                 <td>
                     <span *ngFor="let category of item.categories">
                         <span class="badge badge-info">{{ category.split('/')[1] }}</span>

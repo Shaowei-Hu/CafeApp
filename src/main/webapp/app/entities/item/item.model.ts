@@ -1,5 +1,4 @@
 import { BaseEntity } from './../../shared';
-import { Category } from '../category';
 
 export class Item implements BaseEntity {
     constructor(

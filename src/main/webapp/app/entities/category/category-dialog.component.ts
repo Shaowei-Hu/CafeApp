@@ -4,12 +4,12 @@ import { HttpResponse, HttpErrorResponse } from '@angular/common/http';
 
 import { Observable } from 'rxjs/Observable';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { JhiEventManager, JhiAlertService } from 'ng-jhipster';
+import { JhiEventManager } from 'ng-jhipster';
 
 import { Category } from './category.model';
 import { CategoryPopupService } from './category-popup.service';
 import { CategoryService } from './category.service';
-import { Item, ItemService } from '../item';
+import { Item } from '../item';
 
 @Component({
     selector: 'jhi-category-dialog',
@@ -24,9 +24,7 @@ export class CategoryDialogComponent implements OnInit {
 
     constructor(
         public activeModal: NgbActiveModal,
-        private jhiAlertService: JhiAlertService,
         private categoryService: CategoryService,
-        private itemService: ItemService,
         private eventManager: JhiEventManager
     ) {
     }
@@ -66,10 +64,9 @@ export class CategoryDialogComponent implements OnInit {
     private onSaveError() {
         this.isSaving = false;
     }
-
-    private onError(error: any) {
-        this.jhiAlertService.error(error.message, null, null);
-    }
+    // private onError(error: any) {
+    //     this.jhiAlertService.error(error.message, null, null);
+    // }
 
     trackItemById(index: number, item: Item) {
         return item.id;
