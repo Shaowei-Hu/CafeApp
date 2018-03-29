@@ -39,7 +39,9 @@ export class ItemPopupService {
             } else {
                 // setTimeout used as a workaround for getting ExpressionChangedAfterItHasBeenCheckedError
                 setTimeout(() => {
-                    this.ngbModalRef = this.itemModalRef(component, new Item());
+                    const item = new Item();
+                    item.categories = [];
+                    this.ngbModalRef = this.itemModalRef(component, item);
                     resolve(this.ngbModalRef);
                 }, 0);
             }

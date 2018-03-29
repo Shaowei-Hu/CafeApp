@@ -32,7 +32,7 @@
         <label ngbButtonLabel class="btn-primary" *ngFor="let category of categories">
           <input ngbButton type="radio" [value]="category.id" (click)="getCurrentCategory(category.id)"> {{category.name}}
         </label>
-      </div>
+    </div>
     <br/><br/>
     <div class="table-responsive" *ngIf="items">
         <table class="table table-striped">

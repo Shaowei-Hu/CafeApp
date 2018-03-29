@@ -76,10 +76,33 @@ export class ItemDialogComponent implements OnInit {
         return item.id;
     }
 
+    checkSelected(id: number) {
+        const result: number = this.item.categories.findIndex((element) => {
+            return element.split('/')[0] === id.toString();
+        });
+
+        if (result > -1) {
+            return 'btn btn-primary';
+        } else {
+            return 'btn btn-outline-primary';
+        }
+    }
+
+    setCurrentCategory(id: number, name: string) {
+        const result: number = this.item.categories.findIndex((element) => {
+            return element.split('/')[0] === id.toString();
+        });
+
+        if (result > -1) {
+            this.item.categories.splice(result, 1);
+        } else {
+            this.item.categories.push(id + '/' + name);
+        }
+    }
+
     getSelected(selectedVals: Array<String>, option: any) {
         if (selectedVals) {
             for (let i = 0; i < selectedVals.length; i++) {
-                console.log('@@@@@@@@@@@@@@@@@@@@@@@@@@@@' + selectedVals[i]);
                 if (option.id === selectedVals[i].split('/')[0]) {
                     return selectedVals[i];
                 }

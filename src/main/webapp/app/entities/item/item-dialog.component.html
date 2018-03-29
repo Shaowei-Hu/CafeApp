@@ -39,10 +39,11 @@
         </div>
         <div class="form-group">
             <label for="field_category">Categories</label>
-            <select class="form-control" multiple name="category" [(ngModel)]="item.categories">
-                <option *ngFor="let categoryOption of categories; trackBy: trackCategoryById"
-                [ngValue]="getSelected(item.categories, categoryOption)">{{categoryOption.name}}</option>
-            </select>
+            <div class="" *ngIf="categories && categories.length>0">
+                <span *ngFor="let category of categories">
+                  <button type="button" [class]="checkSelected(category.id)" (click)="setCurrentCategory(category.id)">{{category.name}}</button>
+                </span>
+            </div>
         </div>
 
         <div class="form-group">
