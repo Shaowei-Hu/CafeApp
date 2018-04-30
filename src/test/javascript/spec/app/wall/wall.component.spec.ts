@@ -1,0 +1,3 @@
+describe('WallComponent Tests', () => {
+
+});

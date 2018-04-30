@@ -47,6 +47,12 @@ export class ItemService {
             .map((res: HttpResponse<Item[]>) => this.convertArrayResponse(res));
     }
 
+    queryByImageNotNull(req?: any): Observable<HttpResponse<Item[]>> {
+        const options = createRequestOption(req);
+        return this.http.get<Item[]>(this.resourceUrl + '/image-not-null', { params: options, observe: 'response' })
+            .map((res: HttpResponse<Item[]>) => this.convertArrayResponse(res));
+    }
+
     delete(id: number): Observable<HttpResponse<any>> {
         return this.http.delete<any>(`${this.resourceUrl}/${id}`, { observe: 'response'});
     }

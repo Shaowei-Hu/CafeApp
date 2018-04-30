@@ -114,6 +114,21 @@ public class ItemResource {
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
     
+    /**
+     * GET  /items/:id : get the "id" item.
+     *
+     * @param id the id of the itemDTO to retrieve
+     * @return the ResponseEntity with status 200 (OK) and with body the itemDTO, or with status 404 (Not Found)
+     */
+    @GetMapping("/items/image-not-null")
+    @Timed
+    public ResponseEntity<List<ItemDTO>> getItemByImageNotNull(Pageable pageable) {
+        log.debug("REST request to get Item by image not null: {}");
+        Page<ItemDTO> page = itemService.findAllByImageNotNull(pageable);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/items");
+        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+    }
+    
 
     /**
      * GET  /items/:id : get the "id" item.

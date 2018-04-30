@@ -17,6 +17,7 @@ import { CafeAppAdminModule } from './admin/admin.module';
 import { CafeAppAccountModule } from './account/account.module';
 import { CafeAppEntityModule } from './entities/entity.module';
 import { PaginationConfig } from './blocks/config/uib-pagination.config';
+import { CafeAppWallModule } from './wall/wall.module';
 // jhipster-needle-angular-add-module-import JHipster will add new module here
 import {
     JhiMainComponent,
@@ -37,6 +38,7 @@ import {
         CafeAppAdminModule,
         CafeAppAccountModule,
         CafeAppEntityModule,
+        CafeAppWallModule,
         // jhipster-needle-angular-add-module JHipster will add new module here
     ],
     declarations: [

@@ -32,6 +32,14 @@ public interface ItemService {
      * @return the list of entities
      */
     Page<ItemDTO> findAllByCategoryId(Long id, Pageable pageable);
+    
+    /**
+     * Get a page of the items where image url is not null.
+     *
+     * @param pageable the pagination information
+     * @return the list of entities
+     */
+    Page<ItemDTO> findAllByImageNotNull(Pageable pageable);
 
     /**
      * Get the "id" item.

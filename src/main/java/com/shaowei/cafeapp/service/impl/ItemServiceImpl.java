@@ -82,6 +82,20 @@ public class ItemServiceImpl implements ItemService {
         return itemRepository.findByCategories_Id(id, pageable)
             .map(itemMapper::toDto);
 	}
+	
+    /**
+     * Get a page of the items where image url is not null.
+     *
+     * @param pageable the pagination information
+     * @return the list of entities
+     */
+	@Override
+	@Transactional(readOnly = true)
+	public Page<ItemDTO> findAllByImageNotNull(Pageable pageable) {
+        log.debug("Request to get all Items by category");
+        return itemRepository.findByImageNotNull(pageable)
+            .map(itemMapper::toDto);
+	}
 
     /**
      * Get one item by id.

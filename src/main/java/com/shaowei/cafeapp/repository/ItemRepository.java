@@ -15,5 +15,5 @@ import com.shaowei.cafeapp.domain.Item;
 public interface ItemRepository extends JpaRepository<Item, Long> {
 
 	Page<Item> findByCategories_Id(Long id, Pageable pageable);
-	
+	Page<Item> findByImageNotNull(Pageable pageable);
 }
