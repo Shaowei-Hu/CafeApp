@@ -29,8 +29,14 @@
                     </span>
                 </a>
                 <ul class="dropdown-menu" ngbDropdownMenu>
-                    <li class="dropdown-item" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}" (click)="collapseNavbar()">
-                        <a class="dropdown-item" routerLink="wall">
+                    <li>
+                        <a class="dropdown-item" routerLink="album" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}" (click)="collapseNavbar()">
+                            <i class="fa fa-hand-spock-o" aria-hidden="true"></i>
+                            <span>Album</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a routerLink="wall" class="dropdown-item" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}" (click)="collapseNavbar()">
                             <i class="fa fa-newspaper-o" aria-hidden="true"></i>
                             <span>Wall</span>
                         </a>
