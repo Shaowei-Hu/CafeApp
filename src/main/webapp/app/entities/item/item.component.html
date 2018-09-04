@@ -42,8 +42,8 @@
             <th jhiSortBy="url"><span>Url</span> <span class="fa fa-sort"></span></th>
             <th jhiSortBy="name"><span>Name</span> <span class="fa fa-sort"></span></th>
             <th jhiSortBy="description"><span>Description</span> <span class="fa fa-sort"></span></th>
-            <!-- <th jhiSortBy="image"><span>Image</span> <span class="fa fa-sort"></span></th>
-            <th jhiSortBy="tags"><span>Tags</span> <span class="fa fa-sort"></span></th> -->
+            <th jhiSortBy="image"><span>Image</span> <span class="fa fa-sort"></span></th>
+            <!-- <th jhiSortBy="tags"><span>Tags</span> <span class="fa fa-sort"></span></th> -->
             <th><span>Categories</span></th>
             <th jhiSortBy="date"><span>Date</span> <span class="fa fa-sort"></span></th>
             <th></th>
@@ -55,8 +55,8 @@
                 <td><a href="{{item.url}}" target="_blank">{{item.url.substring(7, 98)}}</a></td>
                 <td>{{item.name}}</td>
                 <td>{{item.description}}</td>
-                <!-- <td>{{item.image}}</td>
-                <td>{{item.tags}}</td> -->
+                <td><span *ngIf="item.image"><i class="fa fa-camera-retro" aria-hidden="true"></i></span></td>
+                <!-- <td>{{item.tags}}</td> -->
                 <td>
                     <span *ngFor="let category of item.categories">
                         <span class="badge badge-info">{{ category.split('/')[1] }}</span>
