@@ -69,6 +69,13 @@ export class CategoryComponent implements OnInit, OnDestroy {
         );
     }
 
+    // encryptCurrentPage() {
+    //     this.categoryService.updateCurrentPage({
+    //         page: this.page - 1,
+    //         size: this.itemsPerPage,
+    //         sort: this.sort()});
+    // }
+
     reset() {
         this.page = 0;
         this.categories = [];

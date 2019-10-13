@@ -89,6 +89,22 @@ currentAccount: any;
                 (res: HttpErrorResponse) => this.onError(res.message)
         );
     }
+
+    // encryptCurrentPage() {
+    //     this.itemService.updateCurrentPage({
+    //         page: this.page - 1,
+    //         size: this.itemsPerPage,
+    //         sort: this.sort()});
+    // }
+
+    // encrypt() {
+    //     this.items.forEach((item) => this.itemService.encryptItem(item));
+    // }
+
+    // decrypt() {
+    //     this.items.forEach((item) => this.itemService.decryptItem(item));
+    // }
+
     loadPage(page: number) {
         if (page !== this.previousPage) {
             this.previousPage = page;
@@ -141,7 +157,7 @@ currentAccount: any;
     loadCategories() {
         this.categoryService.query({
             page: 0,
-            size: 30,
+            size: this.itemsPerPage,
             sort: this.sort()
         }).subscribe(
             (res: HttpResponse<Category[]>) => this.onCategorySuccess(res.body),

@@ -39,10 +39,10 @@ import {
         CafeAppHomeModule,
         CafeAppAdminModule,
         CafeAppAccountModule,
+        CafeAppKeyModule,
         CafeAppEntityModule,
         CafeAppWallModule,
         CafeAppAlbumModule,
-        CafeAppKeyModule,
         // jhipster-needle-angular-add-module JHipster will add new module here
     ],
     declarations: [

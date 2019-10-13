@@ -44,7 +44,6 @@ export class ItemDialogComponent implements OnInit {
     save() {
         this.isSaving = true;
         if (this.item.id !== undefined) {
-            console.log(this.item);
             this.subscribeToSaveResponse(
                 this.itemService.update(this.item));
         } else {

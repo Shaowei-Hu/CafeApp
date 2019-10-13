@@ -1,0 +1,5 @@
+mysqldump --user=mon_user --password=mon_password --databases nom_de_la_base > fichier_destination.sql
+
+
+
+mysql --host host --user user -passwordpass base_de_donnees < fichier_dump

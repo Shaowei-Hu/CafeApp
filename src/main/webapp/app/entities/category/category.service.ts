@@ -5,6 +5,7 @@ import { SERVER_API_URL } from '../../app.constants';
 
 import { Category } from './category.model';
 import { createRequestOption } from '../../shared';
+import { KeyService } from '../../key/key.service';
 
 export type EntityResponseType = HttpResponse<Category>;
 
@@ -14,7 +15,7 @@ export class CategoryService {
     private resourceUrl =  SERVER_API_URL + 'api/categories';
     private resourceSearchUrl = SERVER_API_URL + 'api/_search/categories';
 
-    constructor(private http: HttpClient) { }
+    constructor(private http: HttpClient, private keyService: KeyService) { }
 
     create(category: Category): Observable<EntityResponseType> {
         const copy = this.convert(category);
@@ -67,7 +68,8 @@ export class CategoryService {
      * Convert a returned JSON object to Category.
      */
     private convertItemFromServer(category: Category): Category {
-        const copy: Category = Object.assign({}, category);
+        let copy: Category = Object.assign({}, category);
+        copy = this.decryptCategory(copy);
         return copy;
     }
 
@@ -75,7 +77,49 @@ export class CategoryService {
      * Convert a Category to a JSON which can be sent to the server.
      */
     private convert(category: Category): Category {
-        const copy: Category = Object.assign({}, category);
+        let copy: Category = Object.assign({}, category);
+        copy = this.encryptCategory(copy);
         return copy;
+    }
+
+    updateCurrentPage(req?: any) {
+        const options = createRequestOption(req);
+        this.http.get<Category[]>(this.resourceUrl, { params: options, observe: 'response' })
+            .map((res: HttpResponse<Category[]>) => this.convertEncryptArrayResponse(res))
+            .subscribe(
+                (res: HttpResponse<Category[]>) => {
+                    console.log('ready to update');
+                    res.body.forEach((element) => {
+                        this.update(element).subscribe((result: HttpResponse<Category>) => {},
+                        (result: any) => {});
+                    });
+                },
+                (res: any) => {}
+        );
+    }
+
+    private convertEncryptArrayResponse(res: HttpResponse<Category[]>): HttpResponse<Category[]> {
+        const jsonResponse: Category[] = res.body;
+        const body: Category[] = [];
+        for (let i = 0; i < jsonResponse.length; i++) {
+            let item = this.convertItemFromServer(jsonResponse[i]);
+            item = this.encryptCategory(item);
+            body.push(item);
+        }
+        return res.clone({body});
+    }
+
+    private encryptCategory(category) {
+        category.name = this.keyService.encrypt(category.name);
+        category.information = this.keyService.encrypt(category.information);
+        category.description = this.keyService.encrypt(category.description);
+        return category;
+    }
+
+    private decryptCategory(category) {
+        category.name = this.keyService.decrypt(category.name);
+        category.information = this.keyService.decrypt(category.information);
+        category.description = this.keyService.decrypt(category.description);
+        return category;
     }
 }

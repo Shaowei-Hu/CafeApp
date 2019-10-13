@@ -6,6 +6,13 @@
     <h5 class="text-center">Subtitle</h5>
     <hr/>
     <p class="text-justify">Content</p>
+    <div class="form-group">
+      <label>Key</label>
+      <input type="text" class="form-control" [(ngModel)]="key" />
+  </div>
+  <button type="button" class="btn btn-secondary" (click)="updateKey()">
+    <span class="fa fa-paper-plane"></span>&nbsp;<span>Update</span>
+  </button>
   </div>
   <div class="col-md-1"></div>
 </div>

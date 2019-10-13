@@ -3,7 +3,7 @@ import { RouterModule } from '@angular/router';
 
 import { CafeAppSharedModule } from '../shared';
 
-import { KEY_ROUTE, KeyComponent } from './';
+import { KEY_ROUTE, KeyComponent, KeyService } from './';
 
 @NgModule({
     imports: [
@@ -16,6 +16,7 @@ import { KEY_ROUTE, KeyComponent } from './';
     entryComponents: [
     ],
     providers: [
+      KeyService
     ],
     schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })

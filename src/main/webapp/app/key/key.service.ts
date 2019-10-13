@@ -4,37 +4,42 @@ import * as CryptoJS from 'crypto-js';
 @Injectable()
 export class KeyService {
 
-    constructor() { }
+    private keys: string;
 
-    encrypt(keys, value){
-        if (!keys || !value) {
+    constructor() {}
+
+    setKey(value: string) {
+        this.keys = value;
+    }
+
+    encrypt(value): string {
+        if (!this.keys || !value) {
             return value;
         }
-        var key = CryptoJS.enc.Utf8.parse(keys);
-        var iv = CryptoJS.enc.Utf8.parse(keys);
-        var encrypted = CryptoJS.AES.encrypt(CryptoJS.enc.Utf8.parse(value.toString()), key,
+        const key = CryptoJS.enc.Utf8.parse(this.keys);
+        const iv = CryptoJS.enc.Utf8.parse(this.keys);
+        const encrypted = CryptoJS.AES.encrypt(CryptoJS.enc.Utf8.parse(value.toString()), key,
             {
-                keySize: 128 / 8,
-                iv: iv,
-                mode: CryptoJS.mode.CBC,
-                padding: CryptoJS.pad.Pkcs7
+                'keySize': 128 / 8,
+                'iv': iv,
+                'mode': CryptoJS.mode.CBC,
+                'padding': CryptoJS.pad.Pkcs7
             });
 
         return encrypted.toString();
     }
 
-//The get method is use for decrypt the value.
-    decrypt(keys, value){
-        if (!keys || !value) {
+    decrypt(value): string {
+        if (!this.keys || !value) {
             return value;
         }
-        var key = CryptoJS.enc.Utf8.parse(keys);
-        var iv = CryptoJS.enc.Utf8.parse(keys);
-        var decrypted = CryptoJS.AES.decrypt(value, key, {
-            keySize: 128 / 8,
-            iv: iv,
-            mode: CryptoJS.mode.CBC,
-            padding: CryptoJS.pad.Pkcs7
+        const key = CryptoJS.enc.Utf8.parse(this.keys);
+        const iv = CryptoJS.enc.Utf8.parse(this.keys);
+        const decrypted = CryptoJS.AES.decrypt(value, key, {
+            'keySize': 128 / 8,
+            'iv': iv,
+            'mode': CryptoJS.mode.CBC,
+            'padding': CryptoJS.pad.Pkcs7
         });
 
         return decrypted.toString(CryptoJS.enc.Utf8);
