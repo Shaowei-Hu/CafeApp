@@ -94,33 +94,6 @@ export class ItemService {
         return res.clone({body});
     }
 
-    private convertEncryptArrayResponse(res: HttpResponse<Item[]>): HttpResponse<Item[]> {
-        const jsonResponse: Item[] = res.body;
-        const body: Item[] = [];
-        for (let i = 0; i < jsonResponse.length; i++) {
-            let item = this.convertItemFromServer(jsonResponse[i]);
-            item = this.encryptItem(item);
-            body.push(item);
-        }
-        return res.clone({body});
-    }
-
-    private encryptItem(item) {
-        item.url = this.keyService.encrypt(item.url);
-        item.image = this.keyService.encrypt(item.image);
-        item.description = this.keyService.encrypt(item.description);
-        item.name = this.keyService.encrypt(item.name);
-        return item;
-    }
-
-    private decryptItem(item) {
-        item.url = this.keyService.decrypt(item.url);
-        item.image = this.keyService.decrypt(item.image);
-        item.description = this.keyService.decrypt(item.description);
-        item.name = this.keyService.decrypt(item.name);
-        return item;
-    }
-
     /**
      * Convert a returned JSON object to Item.
      */
@@ -140,5 +113,37 @@ export class ItemService {
         copy = this.encryptItem(copy);
         copy.date = this.dateUtils.toDate(item.date);
         return copy;
+    }
+
+    private encryptItem(item) {
+        item.url = this.keyService.encrypt(item.url);
+        item.image = this.keyService.encrypt(item.image);
+        item.description = this.keyService.encrypt(item.description);
+        item.name = this.keyService.encrypt(item.name);
+        return item;
+    }
+
+    public decryptItem(item) {
+        item.url = this.keyService.decrypt(item.url);
+        item.image = this.keyService.decrypt(item.image);
+        item.description = this.keyService.decrypt(item.description);
+        item.name = this.keyService.decrypt(item.name);
+        if (!!item.categories) {
+            item.categories = item.categories.map((element) => {
+                return element = element.split('/')[0] + '/' + this.keyService.decrypt(element.split('/')[1]);
+            });
+        }
+        return item;
+    }
+
+    private convertEncryptArrayResponse(res: HttpResponse<Item[]>): HttpResponse<Item[]> {
+        const jsonResponse: Item[] = res.body;
+        const body: Item[] = [];
+        for (let i = 0; i < jsonResponse.length; i++) {
+            let item = this.convertItemFromServer(jsonResponse[i]);
+            item = this.encryptItem(item);
+            body.push(item);
+        }
+        return res.clone({body});
     }
 }

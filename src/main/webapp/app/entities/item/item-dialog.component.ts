@@ -10,6 +10,7 @@ import { Item } from './item.model';
 import { ItemPopupService } from './item-popup.service';
 import { ItemService } from './item.service';
 import { Category, CategoryService } from '../category';
+import { ITEMS_PER_PAGE, Principal } from '../../shared';
 
 @Component({
     selector: 'jhi-item-dialog',
@@ -33,8 +34,10 @@ export class ItemDialogComponent implements OnInit {
 
     ngOnInit() {
         this.isSaving = false;
-        this.categoryService.query()
-            .subscribe((res: HttpResponse<Category[]>) => { this.categories = res.body; }, (res: HttpErrorResponse) => this.onError(res.message));
+        this.categoryService.query({
+            page: 0,
+            size: ITEMS_PER_PAGE
+        }).subscribe((res: HttpResponse<Category[]>) => { this.categories = res.body; }, (res: HttpErrorResponse) => this.onError(res.message));
     }
 
     clear() {
