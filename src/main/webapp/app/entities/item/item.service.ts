@@ -7,6 +7,7 @@ import { JhiDateUtils } from 'ng-jhipster';
 
 import { Item } from './item.model';
 import { createRequestOption } from '../../shared';
+import { KeyService } from '../../key/key.service';
 
 export type EntityResponseType = HttpResponse<Item>;
 
@@ -16,7 +17,7 @@ export class ItemService {
     private resourceUrl =  SERVER_API_URL + 'api/items';
     private resourceSearchUrl = SERVER_API_URL + 'api/_search/items';
 
-    constructor(private http: HttpClient, private dateUtils: JhiDateUtils) { }
+    constructor(private http: HttpClient, private dateUtils: JhiDateUtils, private keyService: KeyService) { }
 
     create(item: Item): Observable<EntityResponseType> {
         const copy = this.convert(item);
@@ -39,6 +40,22 @@ export class ItemService {
         const options = createRequestOption(req);
         return this.http.get<Item[]>(this.resourceUrl, { params: options, observe: 'response' })
             .map((res: HttpResponse<Item[]>) => this.convertArrayResponse(res));
+    }
+
+    updateCurrentPage(req?: any) {
+        const options = createRequestOption(req);
+        this.http.get<Item[]>(this.resourceUrl, { params: options, observe: 'response' })
+            .map((res: HttpResponse<Item[]>) => this.convertEncryptArrayResponse(res))
+            .subscribe(
+                (res: HttpResponse<Item[]>) => {
+                    console.log('ready to update');
+                    res.body.forEach((element) => {
+                        this.update(element).subscribe((result: HttpResponse<Item>) => {},
+                        (result: any) => {});
+                    });
+                },
+                (res: any) => {}
+        );
     }
 
     queryByCategoryId(id: number, req?: any): Observable<HttpResponse<Item[]>> {
@@ -81,7 +98,8 @@ export class ItemService {
      * Convert a returned JSON object to Item.
      */
     private convertItemFromServer(item: Item): Item {
-        const copy: Item = Object.assign({}, item);
+        let copy: Item = Object.assign({}, item);
+        copy = this.decryptItem(copy);
         copy.date = this.dateUtils
             .convertDateTimeFromServer(item.date);
         return copy;
@@ -91,9 +109,41 @@ export class ItemService {
      * Convert a Item to a JSON which can be sent to the server.
      */
     private convert(item: Item): Item {
-        const copy: Item = Object.assign({}, item);
-
+        let copy: Item = Object.assign({}, item);
+        copy = this.encryptItem(copy);
         copy.date = this.dateUtils.toDate(item.date);
         return copy;
+    }
+
+    private encryptItem(item) {
+        item.url = this.keyService.encrypt(item.url);
+        item.image = this.keyService.encrypt(item.image);
+        item.description = this.keyService.encrypt(item.description);
+        item.name = this.keyService.encrypt(item.name);
+        return item;
+    }
+
+    public decryptItem(item) {
+        item.url = this.keyService.decrypt(item.url);
+        item.image = this.keyService.decrypt(item.image);
+        item.description = this.keyService.decrypt(item.description);
+        item.name = this.keyService.decrypt(item.name);
+        if (!!item.categories) {
+            item.categories = item.categories.map((element) => {
+                return element = element.split('/')[0] + '/' + this.keyService.decrypt(element.split('/')[1]);
+            });
+        }
+        return item;
+    }
+
+    private convertEncryptArrayResponse(res: HttpResponse<Item[]>): HttpResponse<Item[]> {
+        const jsonResponse: Item[] = res.body;
+        const body: Item[] = [];
+        for (let i = 0; i < jsonResponse.length; i++) {
+            let item = this.convertItemFromServer(jsonResponse[i]);
+            item = this.encryptItem(item);
+            body.push(item);
+        }
+        return res.clone({body});
     }
 }
