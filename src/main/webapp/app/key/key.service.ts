@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { JhiAlertService } from 'ng-jhipster';
 import * as CryptoJS from 'crypto-js';
 
 @Injectable()
@@ -6,14 +7,18 @@ export class KeyService {
 
     private keys: string;
 
-    constructor() {}
+    constructor(private jhiAlertService: JhiAlertService) {}
 
     setKey(value: string) {
         this.keys = value;
     }
 
     encrypt(value): string {
-        if (!this.keys || !value) {
+        if (!this.keys) {
+            this.jhiAlertService.error('Key dose not exist', null, null);
+            return;
+        }
+        if (!value) {
             return value;
         }
         const key = CryptoJS.enc.Utf8.parse(this.keys);
