@@ -20,6 +20,8 @@ logging:
         io.github.jhipster: INFO
 
 spring:
+    jmx:
+        default-domain: seculib
     devtools:
         restart:
             enabled: false
