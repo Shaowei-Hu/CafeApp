@@ -1,9 +1,8 @@
 package com.shaowei.cafeapp.service.impl;
 
-import com.shaowei.cafeapp.service.CategoryService;
 import com.shaowei.cafeapp.domain.Category;
 import com.shaowei.cafeapp.repository.CategoryRepository;
-import com.shaowei.cafeapp.repository.search.CategorySearchRepository;
+import com.shaowei.cafeapp.service.CategoryService;
 import com.shaowei.cafeapp.service.dto.CategoryDTO;
 import com.shaowei.cafeapp.service.mapper.CategoryMapper;
 import org.slf4j.Logger;
@@ -12,9 +11,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-
-import static org.elasticsearch.index.query.QueryBuilders.*;
 
 /**
  * Service Implementation for managing Category.
@@ -29,12 +25,9 @@ public class CategoryServiceImpl implements CategoryService {
 
     private final CategoryMapper categoryMapper;
 
-    private final CategorySearchRepository categorySearchRepository;
-
-    public CategoryServiceImpl(CategoryRepository categoryRepository, CategoryMapper categoryMapper, CategorySearchRepository categorySearchRepository) {
+    public CategoryServiceImpl(CategoryRepository categoryRepository, CategoryMapper categoryMapper) {
         this.categoryRepository = categoryRepository;
         this.categoryMapper = categoryMapper;
-        this.categorySearchRepository = categorySearchRepository;
     }
 
     /**
@@ -81,7 +74,7 @@ public class CategoryServiceImpl implements CategoryService {
         Category category = categoryRepository.findOne(id);
         return categoryMapper.toDto(category);
     }
-    
+
     /**
      * Get one category by id.
      *
@@ -118,7 +111,7 @@ public class CategoryServiceImpl implements CategoryService {
     @Transactional(readOnly = true)
     public Page<CategoryDTO> search(String query, Pageable pageable) {
         log.debug("Request to search for a page of Categories for query {}", query);
-        Page<Category> result = categorySearchRepository.search(queryStringQuery(query), pageable);
+        Page<Category> result = null;
         return result.map(categoryMapper::toDto);
     }
 }

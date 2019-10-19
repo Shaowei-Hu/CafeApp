@@ -1,21 +1,17 @@
 package com.shaowei.cafeapp.service.impl;
 
-import static org.elasticsearch.index.query.QueryBuilders.queryStringQuery;
-
+import com.shaowei.cafeapp.domain.Item;
+import com.shaowei.cafeapp.repository.ItemRepository;
+import com.shaowei.cafeapp.service.CategoryService;
+import com.shaowei.cafeapp.service.ItemService;
+import com.shaowei.cafeapp.service.dto.ItemDTO;
+import com.shaowei.cafeapp.service.mapper.ItemMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import com.shaowei.cafeapp.domain.Item;
-import com.shaowei.cafeapp.repository.ItemRepository;
-import com.shaowei.cafeapp.repository.search.ItemSearchRepository;
-import com.shaowei.cafeapp.service.CategoryService;
-import com.shaowei.cafeapp.service.ItemService;
-import com.shaowei.cafeapp.service.dto.ItemDTO;
-import com.shaowei.cafeapp.service.mapper.ItemMapper;
 
 /**
  * Service Implementation for managing Item.
@@ -30,13 +26,9 @@ public class ItemServiceImpl implements ItemService {
 
     private final ItemMapper itemMapper;
 
-    private final ItemSearchRepository itemSearchRepository;
-
-    public ItemServiceImpl(ItemRepository itemRepository, ItemMapper itemMapper,
-    		ItemSearchRepository itemSearchRepository, CategoryService categoryService) {
+    public ItemServiceImpl(ItemRepository itemRepository, ItemMapper itemMapper, CategoryService categoryService) {
         this.itemRepository = itemRepository;
         this.itemMapper = itemMapper;
-        this.itemSearchRepository = itemSearchRepository;
     }
 
     /**
@@ -68,7 +60,7 @@ public class ItemServiceImpl implements ItemService {
         return itemRepository.findAll(pageable)
             .map(itemMapper::toDto);
     }
-    
+
     /**
      * Get all the items by category id.
      *
@@ -82,7 +74,7 @@ public class ItemServiceImpl implements ItemService {
         return itemRepository.findByCategories_Id(id, pageable)
             .map(itemMapper::toDto);
 	}
-	
+
     /**
      * Get a page of the items where image url is not null.
      *
@@ -134,7 +126,7 @@ public class ItemServiceImpl implements ItemService {
     @Transactional(readOnly = true)
     public Page<ItemDTO> search(String query, Pageable pageable) {
         log.debug("Request to search for a page of Items for query {}", query);
-        Page<Item> result = itemSearchRepository.search(queryStringQuery(query), pageable);
+        Page<Item> result = null;
         return result.map(itemMapper::toDto);
     }
 
