@@ -1,10 +1,9 @@
 package com.shaowei.cafeapp.web.rest;
 
-import com.shaowei.cafeapp.config.Constants;
 import com.codahale.metrics.annotation.Timed;
+import com.shaowei.cafeapp.config.Constants;
 import com.shaowei.cafeapp.domain.User;
 import com.shaowei.cafeapp.repository.UserRepository;
-import com.shaowei.cafeapp.repository.search.UserSearchRepository;
 import com.shaowei.cafeapp.security.AuthoritiesConstants;
 import com.shaowei.cafeapp.service.MailService;
 import com.shaowei.cafeapp.service.UserService;
@@ -15,7 +14,6 @@ import com.shaowei.cafeapp.web.rest.errors.LoginAlreadyUsedException;
 import com.shaowei.cafeapp.web.rest.util.HeaderUtil;
 import com.shaowei.cafeapp.web.rest.util.PaginationUtil;
 import io.github.jhipster.web.util.ResponseUtil;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -29,11 +27,9 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.*;
-import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
-
-import static org.elasticsearch.index.query.QueryBuilders.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
 /**
  * REST controller for managing users.
@@ -71,14 +67,11 @@ public class UserResource {
 
     private final MailService mailService;
 
-    private final UserSearchRepository userSearchRepository;
-
-    public UserResource(UserRepository userRepository, UserService userService, MailService mailService, UserSearchRepository userSearchRepository) {
+    public UserResource(UserRepository userRepository, UserService userService, MailService mailService) {
 
         this.userRepository = userRepository;
         this.userService = userService;
         this.mailService = mailService;
-        this.userSearchRepository = userSearchRepository;
     }
 
     /**
@@ -206,8 +199,6 @@ public class UserResource {
     @GetMapping("/_search/users/{query}")
     @Timed
     public List<User> search(@PathVariable String query) {
-        return StreamSupport
-            .stream(userSearchRepository.search(queryStringQuery(query)).spliterator(), false)
-            .collect(Collectors.toList());
+        return new ArrayList<>();
     }
 }
