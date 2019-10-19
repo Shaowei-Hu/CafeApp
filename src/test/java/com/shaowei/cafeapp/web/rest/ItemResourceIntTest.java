@@ -1,15 +1,12 @@
 package com.shaowei.cafeapp.web.rest;
 
 import com.shaowei.cafeapp.CafeApp;
-
 import com.shaowei.cafeapp.domain.Item;
 import com.shaowei.cafeapp.repository.ItemRepository;
 import com.shaowei.cafeapp.service.ItemService;
-import com.shaowei.cafeapp.repository.search.ItemSearchRepository;
 import com.shaowei.cafeapp.service.dto.ItemDTO;
 import com.shaowei.cafeapp.service.mapper.ItemMapper;
 import com.shaowei.cafeapp.web.rest.errors.ExceptionTranslator;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -26,13 +23,13 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import java.time.Instant;
-import java.time.ZonedDateTime;
-import java.time.ZoneOffset;
 import java.time.ZoneId;
+import java.time.ZoneOffset;
+import java.time.ZonedDateTime;
 import java.util.List;
 
-import static com.shaowei.cafeapp.web.rest.TestUtil.sameInstant;
 import static com.shaowei.cafeapp.web.rest.TestUtil.createFormattingConversionService;
+import static com.shaowei.cafeapp.web.rest.TestUtil.sameInstant;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasItem;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -73,9 +70,6 @@ public class ItemResourceIntTest {
 
     @Autowired
     private ItemService itemService;
-
-    @Autowired
-    private ItemSearchRepository itemSearchRepository;
 
     @Autowired
     private MappingJackson2HttpMessageConverter jacksonMessageConverter;
@@ -123,7 +117,6 @@ public class ItemResourceIntTest {
 
     @Before
     public void initTest() {
-        itemSearchRepository.deleteAll();
         item = createEntity(em);
     }
 
@@ -151,9 +144,7 @@ public class ItemResourceIntTest {
         assertThat(testItem.getDate()).isEqualTo(DEFAULT_DATE);
 
         // Validate the Item in Elasticsearch
-        Item itemEs = itemSearchRepository.findOne(testItem.getId());
         assertThat(testItem.getDate()).isEqualTo(testItem.getDate());
-        assertThat(itemEs).isEqualToIgnoringGivenFields(testItem, "date");
     }
 
     @Test
@@ -227,7 +218,6 @@ public class ItemResourceIntTest {
     public void updateItem() throws Exception {
         // Initialize the database
         itemRepository.saveAndFlush(item);
-        itemSearchRepository.save(item);
         int databaseSizeBeforeUpdate = itemRepository.findAll().size();
 
         // Update the item
@@ -260,9 +250,7 @@ public class ItemResourceIntTest {
         assertThat(testItem.getDate()).isEqualTo(UPDATED_DATE);
 
         // Validate the Item in Elasticsearch
-        Item itemEs = itemSearchRepository.findOne(testItem.getId());
         assertThat(testItem.getDate()).isEqualTo(testItem.getDate());
-        assertThat(itemEs).isEqualToIgnoringGivenFields(testItem, "date");
     }
 
     @Test
@@ -289,7 +277,6 @@ public class ItemResourceIntTest {
     public void deleteItem() throws Exception {
         // Initialize the database
         itemRepository.saveAndFlush(item);
-        itemSearchRepository.save(item);
         int databaseSizeBeforeDelete = itemRepository.findAll().size();
 
         // Get the item
@@ -298,8 +285,6 @@ public class ItemResourceIntTest {
             .andExpect(status().isOk());
 
         // Validate Elasticsearch is empty
-        boolean itemExistsInEs = itemSearchRepository.exists(item.getId());
-        assertThat(itemExistsInEs).isFalse();
 
         // Validate the database is empty
         List<Item> itemList = itemRepository.findAll();
@@ -311,7 +296,6 @@ public class ItemResourceIntTest {
     public void searchItem() throws Exception {
         // Initialize the database
         itemRepository.saveAndFlush(item);
-        itemSearchRepository.save(item);
 
         // Search the item
         restItemMockMvc.perform(get("/api/_search/items?query=id:" + item.getId()))

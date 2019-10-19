@@ -21,9 +21,7 @@ import java.net.URISyntaxException;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.StreamSupport;
 
-import static org.elasticsearch.index.query.QueryBuilders.*;
 
 /**
  * REST controller for managing Item.
@@ -98,7 +96,7 @@ public class ItemResource {
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/items");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
-    
+
     /**
      * GET  /items/:id : get the "id" item.
      *
@@ -113,7 +111,7 @@ public class ItemResource {
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/items");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
-    
+
     /**
      * GET  /items/:id : get the "id" item.
      *
@@ -128,7 +126,7 @@ public class ItemResource {
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/items");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
-    
+
 
     /**
      * GET  /items/:id : get the "id" item.

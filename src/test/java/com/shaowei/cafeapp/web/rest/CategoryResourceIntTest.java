@@ -1,15 +1,12 @@
 package com.shaowei.cafeapp.web.rest;
 
 import com.shaowei.cafeapp.CafeApp;
-
 import com.shaowei.cafeapp.domain.Category;
 import com.shaowei.cafeapp.repository.CategoryRepository;
 import com.shaowei.cafeapp.service.CategoryService;
-import com.shaowei.cafeapp.repository.search.CategorySearchRepository;
 import com.shaowei.cafeapp.service.dto.CategoryDTO;
 import com.shaowei.cafeapp.service.mapper.CategoryMapper;
 import com.shaowei.cafeapp.web.rest.errors.ExceptionTranslator;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -61,9 +58,6 @@ public class CategoryResourceIntTest {
     private CategoryService categoryService;
 
     @Autowired
-    private CategorySearchRepository categorySearchRepository;
-
-    @Autowired
     private MappingJackson2HttpMessageConverter jacksonMessageConverter;
 
     @Autowired
@@ -106,7 +100,6 @@ public class CategoryResourceIntTest {
 
     @Before
     public void initTest() {
-        categorySearchRepository.deleteAll();
         category = createEntity(em);
     }
 
@@ -131,8 +124,6 @@ public class CategoryResourceIntTest {
         assertThat(testCategory.getInformation()).isEqualTo(DEFAULT_INFORMATION);
 
         // Validate the Category in Elasticsearch
-        Category categoryEs = categorySearchRepository.findOne(testCategory.getId());
-        assertThat(categoryEs).isEqualToIgnoringGivenFields(testCategory);
     }
 
     @Test
@@ -200,7 +191,6 @@ public class CategoryResourceIntTest {
     public void updateCategory() throws Exception {
         // Initialize the database
         categoryRepository.saveAndFlush(category);
-        categorySearchRepository.save(category);
         int databaseSizeBeforeUpdate = categoryRepository.findAll().size();
 
         // Update the category
@@ -227,8 +217,6 @@ public class CategoryResourceIntTest {
         assertThat(testCategory.getInformation()).isEqualTo(UPDATED_INFORMATION);
 
         // Validate the Category in Elasticsearch
-        Category categoryEs = categorySearchRepository.findOne(testCategory.getId());
-        assertThat(categoryEs).isEqualToIgnoringGivenFields(testCategory);
     }
 
     @Test
@@ -255,7 +243,6 @@ public class CategoryResourceIntTest {
     public void deleteCategory() throws Exception {
         // Initialize the database
         categoryRepository.saveAndFlush(category);
-        categorySearchRepository.save(category);
         int databaseSizeBeforeDelete = categoryRepository.findAll().size();
 
         // Get the category
@@ -264,8 +251,6 @@ public class CategoryResourceIntTest {
             .andExpect(status().isOk());
 
         // Validate Elasticsearch is empty
-        boolean categoryExistsInEs = categorySearchRepository.exists(category.getId());
-        assertThat(categoryExistsInEs).isFalse();
 
         // Validate the database is empty
         List<Category> categoryList = categoryRepository.findAll();
@@ -277,7 +262,6 @@ public class CategoryResourceIntTest {
     public void searchCategory() throws Exception {
         // Initialize the database
         categoryRepository.saveAndFlush(category);
-        categorySearchRepository.save(category);
 
         // Search the category
         restCategoryMockMvc.perform(get("/api/_search/categories?query=id:" + category.getId()))
