@@ -1,1 +1,1 @@
-mvn package -Pprod -Dmaven.test.skip=true
+mvn package -Pprod,no-liquibase -Dmaven.test.skip=true

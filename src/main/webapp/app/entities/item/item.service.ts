@@ -42,22 +42,6 @@ export class ItemService {
             .map((res: HttpResponse<Item[]>) => this.convertArrayResponse(res));
     }
 
-    updateCurrentPage(req?: any) {
-        const options = createRequestOption(req);
-        this.http.get<Item[]>(this.resourceUrl, { params: options, observe: 'response' })
-            .map((res: HttpResponse<Item[]>) => this.convertEncryptArrayResponse(res))
-            .subscribe(
-                (res: HttpResponse<Item[]>) => {
-                    console.log('ready to update');
-                    res.body.forEach((element) => {
-                        this.update(element).subscribe((result: HttpResponse<Item>) => {},
-                        (result: any) => {});
-                    });
-                },
-                (res: any) => {}
-        );
-    }
-
     queryByCategoryId(id: number, req?: any): Observable<HttpResponse<Item[]>> {
         const options = createRequestOption(req);
         return this.http.get<Item[]>(this.resourceUrl + '/byCategory/' + id, { params: options, observe: 'response' })
@@ -136,14 +120,57 @@ export class ItemService {
         return item;
     }
 
+    updateCurrentPage(req?: any) {
+        const options = createRequestOption(req);
+        this.http.get<Item[]>(this.resourceUrl, { params: options, observe: 'response' })
+            .map((res: HttpResponse<Item[]>) => this.convertEncryptArrayResponse(res))
+            .subscribe(
+                (res: HttpResponse<Item[]>) => {
+                    console.log('ready to update');
+                    res.body.forEach((element) => {
+                        this.updateEncypedtItem(element).subscribe((result: HttpResponse<Item>) => {},
+                        (result: any) => {});
+                    });
+                },
+                (res: any) => {}
+        );
+    }
+
     private convertEncryptArrayResponse(res: HttpResponse<Item[]>): HttpResponse<Item[]> {
         const jsonResponse: Item[] = res.body;
         const body: Item[] = [];
         for (let i = 0; i < jsonResponse.length; i++) {
             let item = this.convertItemFromServer(jsonResponse[i]);
-            item = this.encryptItem(item);
+            item = this.encryptItemWithNewKey(item);
             body.push(item);
         }
         return res.clone({body});
+    }
+
+    updateEncypedtItem(item: Item): Observable<EntityResponseType> {
+        const copy = this.convertEncyptedItem(item);
+        return this.http.put<Item>(this.resourceUrl, copy, { observe: 'response' })
+            .map((res: EntityResponseType) => this.convertResponse(res));
+    }
+
+    private convertEncyptedItem(item: Item): Item {
+        let copy: Item = Object.assign({}, item);
+        return copy;
+    }
+
+    encryptItemWithNewKey(item) {
+        item.url = this.keyService.encryptWithNewKey(item.url);
+        item.image = this.keyService.encryptWithNewKey(item.image);
+        item.description = this.keyService.encryptWithNewKey(item.description);
+        item.name = this.keyService.encryptWithNewKey(item.name);
+        return item;
+    }
+
+    decryptItemWithNewKey(item) {
+        item.url = this.keyService.decryptWithNewKey(item.url);
+        item.image = this.keyService.decryptWithNewKey(item.image);
+        item.description = this.keyService.decryptWithNewKey(item.description);
+        item.name = this.keyService.decryptWithNewKey(item.name);
+        return item;
     }
 }

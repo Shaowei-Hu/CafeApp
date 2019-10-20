@@ -82,33 +82,6 @@ export class CategoryService {
         return copy;
     }
 
-    updateCurrentPage(req?: any) {
-        const options = createRequestOption(req);
-        this.http.get<Category[]>(this.resourceUrl, { params: options, observe: 'response' })
-            .map((res: HttpResponse<Category[]>) => this.convertEncryptArrayResponse(res))
-            .subscribe(
-                (res: HttpResponse<Category[]>) => {
-                    console.log('ready to update');
-                    res.body.forEach((element) => {
-                        this.update(element).subscribe((result: HttpResponse<Category>) => {},
-                        (result: any) => {});
-                    });
-                },
-                (res: any) => {}
-        );
-    }
-
-    private convertEncryptArrayResponse(res: HttpResponse<Category[]>): HttpResponse<Category[]> {
-        const jsonResponse: Category[] = res.body;
-        const body: Category[] = [];
-        for (let i = 0; i < jsonResponse.length; i++) {
-            let item = this.convertItemFromServer(jsonResponse[i]);
-            item = this.encryptCategory(item);
-            body.push(item);
-        }
-        return res.clone({body});
-    }
-
     private encryptCategory(category) {
         category.name = this.keyService.encrypt(category.name);
         category.information = this.keyService.encrypt(category.information);
@@ -120,6 +93,58 @@ export class CategoryService {
         category.name = this.keyService.decrypt(category.name);
         category.information = this.keyService.decrypt(category.information);
         category.description = this.keyService.decrypt(category.description);
+        return category;
+    }
+
+    updateCurrentPage(req?: any) {
+        const options = createRequestOption(req);
+        this.http.get<Category[]>(this.resourceUrl, { params: options, observe: 'response' })
+            .map((res: HttpResponse<Category[]>) => this.convertEncryptArrayResponse(res))
+            .subscribe(
+                (res: HttpResponse<Category[]>) => {
+                    console.log('ready to update');
+                    res.body.forEach((element) => {
+                        this.updateEncypted(element).subscribe((result: HttpResponse<Category>) => {},
+                        (result: any) => {});
+                    });
+                },
+                (res: any) => {}
+        );
+    }
+
+    updateEncypted(category: Category): Observable<EntityResponseType> {
+        const copy = this.convertEncypted(category);
+        return this.http.put<Category>(this.resourceUrl, copy, { observe: 'response' })
+            .map((res: EntityResponseType) => this.convertResponse(res));
+    }
+
+    private convertEncypted(category: Category): Category {
+        let copy: Category = Object.assign({}, category);
+        return copy;
+    }
+
+    private convertEncryptArrayResponse(res: HttpResponse<Category[]>): HttpResponse<Category[]> {
+        const jsonResponse: Category[] = res.body;
+        const body: Category[] = [];
+        for (let i = 0; i < jsonResponse.length; i++) {
+            let item = this.convertItemFromServer(jsonResponse[i]);
+            item = this.encryptCategoryWithNewKey(item);
+            body.push(item);
+        }
+        return res.clone({body});
+    }
+
+    encryptCategoryWithNewKey(category) {
+        category.name = this.keyService.encryptWithNewKey(category.name);
+        category.information = this.keyService.encryptWithNewKey(category.information);
+        category.description = this.keyService.encryptWithNewKey(category.description);
+        return category;
+    }
+
+    decryptCategoryWithNewKey(category) {
+        category.name = this.keyService.decryptWithNewKey(category.name);
+        category.information = this.keyService.decryptWithNewKey(category.information);
+        category.description = this.keyService.decryptWithNewKey(category.description);
         return category;
     }
 }

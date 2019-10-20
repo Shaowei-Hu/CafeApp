@@ -90,20 +90,20 @@ currentAccount: any;
         );
     }
 
-    // encryptCurrentPage() {
-    //     this.itemService.updateCurrentPage({
-    //         page: this.page - 1,
-    //         size: this.itemsPerPage,
-    //         sort: this.sort()});
-    // }
+    encryptCurrentPage() {
+        this.itemService.updateCurrentPage({
+            page: this.page - 1,
+            size: this.itemsPerPage,
+            sort: this.sort()});
+    }
 
-    // encrypt() {
-    //     this.items.forEach((item) => this.itemService.encryptItem(item));
-    // }
+    encrypt() {
+        this.items.forEach((item) => this.itemService.encryptItemWithNewKey(item));
+    }
 
-    // decrypt() {
-    //     this.items.forEach((item) => this.itemService.decryptItem(item));
-    // }
+    decrypt() {
+        this.items.forEach((item) => this.itemService.decryptItemWithNewKey(item));
+    }
 
     loadPage(page: number) {
         if (page !== this.previousPage) {
