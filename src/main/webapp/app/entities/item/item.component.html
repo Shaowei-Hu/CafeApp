@@ -59,7 +59,7 @@
                 <!-- <td>{{item.tags}}</td> -->
                 <td>
                     <span *ngFor="let category of item.categories">
-                        <span class="badge badge-info">{{ category.split('/')[1] }}</span>
+                        <span class="badge badge-info">{{ category.substring(category.indexOf('/') + 1) }}</span>
                     </span>
                 </td>
                 <td>{{item.date | date:'medium'}}</td>
