@@ -778,12 +778,12 @@
                                 </configuration>
                             </execution>
                             <execution>
-                                <id>yarn install</id>
+                                <id>yarn add</id>
                                 <goals>
                                     <goal>yarn</goal>
                                 </goals>
                                 <configuration>
-                                    <arguments>install force</arguments>
+                                    <arguments>add force</arguments>
                                 </configuration>
                             </execution>
                             <!-- <execution>
