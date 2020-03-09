@@ -1,0 +1,37 @@
+name: Java CI
+
+on:
+    push:
+        branches:
+            - master
+
+jobs:
+    build:
+
+        runs-on: ubuntu-latest
+
+        steps:
+            - uses: actions/checkout@v2
+            - name: Set up JDK 1.8
+              uses: actions/setup-java@v1
+              with:
+                  java-version: 1.8
+            - uses: actions/cache@v1
+              with:
+                  path: ~/.m2/repository
+                  key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+                  restore-keys: |
+                      ${{ runner.os }}-maven-
+            - name: Build with Maven
+              run: mvn clean package -Pprod -DskipTests
+            #    - name: cd target
+            #      run: cd target
+            #    - name: Build docker image
+            #      run: docker build ./target
+            - name: Publish to Registry
+              uses: elgohr/Publish-Docker-Github-Action@master
+              with:
+                  name: hushaowei0123/cafeapp
+                  username: ${{ secrets.DOCKER_HUB_NAME }}
+                  password: ${{ secrets.DOCKER_HUB_TOKEN }}
+                  workdir: target
