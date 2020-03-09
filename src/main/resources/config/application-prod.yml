@@ -129,6 +129,13 @@ jhipster:
             host: localhost
             port: 5000
             queue-size: 512
+    cors:
+        allowed-origins: "*"
+        allowed-methods: "*"
+        allowed-headers: "*"
+        exposed-headers: "Authorization,Link,X-Total-Count"
+        allow-credentials: true
+        max-age: 1800
 
 
 # ===================================================================
