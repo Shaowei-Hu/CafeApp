@@ -29,7 +29,7 @@ jobs:
             #    - name: Build docker image
             #      run: docker build ./target
             - name: Publish to Registry
-              uses: elgohr/Publish-Docker-Github-Action@master
+              uses: elgohr/Publish-Docker-Github-Action@v5
               with:
                   name: hushaowei0123/cafeapp
                   username: ${{ secrets.DOCKER_HUB_NAME }}
